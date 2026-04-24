@@ -5,7 +5,7 @@ import {
   Mail,
   Facebook,
   Instagram,
-  Twitter,
+  TikTok,
 } from "lucide-react";
 // import logo from "../asset/1f3ae537638b8a42ec68e9ae4a77c883be930ed3.png";
 import logo from "../../assets/logo.png";
@@ -88,7 +88,7 @@ export function Footer() {
             <h3 className="font-semibold text-lg mb-4">Follow Us</h3>
             <div className="flex gap-3">
               <a
-                href="https://facebook.com/RainbowTours"
+                href="https://www.facebook.com/RainbowPalestina/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/20 hover:bg-[#F5A623] flex items-center justify-center transition-colors"
@@ -96,7 +96,7 @@ export function Footer() {
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="https://instagram.com/Rinbowtours93"
+                href="https://www.instagram.com/rainbowtours93/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/20 hover:bg-[#F5A623] flex items-center justify-center transition-colors"
@@ -104,17 +104,18 @@ export function Footer() {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://twitter.com/RainbowTours"
+                href="https://www.tiktok.com/@rainbowtourspal"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/20 hover:bg-[#F5A623] flex items-center justify-center transition-colors"
               >
-                <Twitter className="w-5 h-5" />
+                <TikTok className="w-5 h-5" />
               </a>
             </div>
             <div className="mt-4 space-y-1">
-              <p className="text-sm text-white/80">@RainbowTours</p>
-              <p className="text-sm text-white/80">@Rinbowtours93</p>
+              <p className="text-sm text-white/80">@rainbowpalestina</p>
+              <p className="text-sm text-white/80">@rainbowtours93</p>
+              <p className="text-sm text-white/80">@rainbowtourspal</p>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, TikTok, Send } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -157,7 +157,7 @@ export function Contact() {
                 </h3>
                 <div className="flex gap-3">
                   <a
-                    href="https://facebook.com/RainbowTours"
+                    href="https://www.facebook.com/RainbowPalestina/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full bg-gradient-to-br from-[#2C4A7C] to-[#F5A623] hover:from-[#1e3255] hover:to-[#e09515] flex items-center justify-center transition-colors"
@@ -165,7 +165,7 @@ export function Contact() {
                     <Facebook className="w-6 h-6 text-white" />
                   </a>
                   <a
-                    href="https://instagram.com/Rinbowtours93"
+                    href="https://www.instagram.com/rainbowtours93/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F5A623] to-[#2C4A7C] hover:from-[#e09515] hover:to-[#1e3255] flex items-center justify-center transition-colors"
@@ -173,17 +173,18 @@ export function Contact() {
                     <Instagram className="w-6 h-6 text-white" />
                   </a>
                   <a
-                    href="https://twitter.com/RainbowTours"
+                    href="https://www.tiktok.com/@rainbowtourspal"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 flex items-center justify-center transition-colors"
                   >
-                    <Twitter className="w-6 h-6 text-white" />
+                    <TikTok className="w-6 h-6 text-white" />
                   </a>
                 </div>
                 <div className="mt-3 space-y-1 text-sm text-gray-600">
-                  <p>@RainbowTours</p>
-                  <p>@Rinbowtours93</p>
+                  <p>@rainbowpalestina</p>
+                  <p>@rainbowtours93</p>
+                  <p>@rainbowtourspal</p>
                 </div>
               </div>
             </div>
