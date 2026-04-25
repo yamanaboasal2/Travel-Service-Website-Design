@@ -42,7 +42,7 @@ export function Contact() {
         setSubmitted(false);
       }, 3000);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to send message. Please try again.";
+      const errorMessage = err instanceof Error ? err.message : t('failedToSendMessage');
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -198,10 +198,10 @@ export function Contact() {
                     <Send className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      {t('Message Sent Successfully!')}
+                      {t('messageSentSuccessfully')}
                     </h3>
                     <p className="text-gray-600">
-                      {t('Thank you for contacting us. We will get back to you within 24 hours.')}
+                      {t('thankYouContact')}
                   </p>
                 </div>
               ) : (
@@ -233,7 +233,7 @@ export function Contact() {
                         id="email"
                         name="email"
                         type="email"
-                        placeholder={t('Enter your email')}
+                        placeholder={t('enterYourEmail')}
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -248,7 +248,7 @@ export function Contact() {
                       id="phone"
                       name="phone"
                       type="tel"
-                      placeholder="0597441666"
+                      placeholder={t('phonePlaceholder')}
                       value={formData.phone}
                       onChange={handleChange}
                       className="rounded-xl"
@@ -290,7 +290,7 @@ export function Contact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-              {t('Find Us on the Map')}
+              {t('findUsOnMap')}
             </h2>
             <p className="text-lg text-gray-600">
               {t('Visit our office at Nablus City Center')}
@@ -302,11 +302,11 @@ export function Contact() {
               <div className="text-center">
                 <MapPin className="w-16 h-16 text-[#2C4A7C] mx-auto mb-4" />
                 <p className="text-xl font-semibold text-gray-900 mb-2">
-                  Nablus City Center, Second Floor
+                  {t('nablusCityCenter')}
                 </p>
-                <p className="text-gray-600">Nablus, Palestine</p>
+                <p className="text-gray-600">{t('nablusPalestine')}</p>
                 <p className="text-sm text-gray-500 mt-4">
-                  Interactive map integration available
+                  {t('interactiveMapAvailable')}
                 </p>
               </div>
             </div>
@@ -319,21 +319,21 @@ export function Contact() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="p-8 bg-gradient-to-br from-[#2C4A7C] via-[#1e3255] to-[#F5A623] text-white">
             <h2 className="text-3xl font-bold mb-6 text-center">
-              {t('Office Hours')}
+              {t('officeHours')}
             </h2>            <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 text-center md:${textAlign('left')}`}>
               <div>
                 <h3 className="font-semibold text-lg mb-2">
-                  {t('Sunday - Thursday')}
+                  {t('sundayThursday')}
                 </h3>
                 <p className="text-white/90">9:00 AM - 6:00 PM</p>
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2">{t('Saturday')}</h3>
+                <h3 className="font-semibold text-lg mb-2">{t('saturday')}</h3>
                 <p className="text-white/90">10:00 AM - 4:00 PM</p>
               </div>
               <div className="md:col-span-2 text-center mt-4">
                 <p className="text-white/90">
-                  {t('Emergency support available 24/7 by phone')}
+                  {t('emergencySupport247')}
                 </p>
               </div>
             </div>
