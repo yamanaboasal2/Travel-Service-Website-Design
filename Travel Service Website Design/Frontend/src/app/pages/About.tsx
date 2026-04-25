@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import {
   Target,
   Eye,
@@ -11,44 +11,42 @@ import {
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function About() {
+  const { t, flexDirection } = useLanguage();
   const values = [
     {
       icon: Award,
-      title: "Competitive Prices",
-      description:
-        "We offer the best value for your money with exclusive deals and competitive rates on all our packages.",
+      title: "competitivePrices",
+      description: "pricesDesc",
       color: "from-blue-500 to-cyan-500",
     },
     {
       icon: Heart,
-      title: "Excellent Service",
-      description:
-        "Our professional and friendly team is dedicated to providing you with outstanding customer service at every step.",
+      title: "excellentService",
+      description: "serviceDesc",
       color: "from-pink-500 to-rose-500",
     },
     {
       icon: Shield,
-      title: "Organized Trips",
-      description:
-        "Every detail is carefully planned and organized to ensure your trip is smooth, safe, and stress-free.",
+      title: "organizedTrips",
+      description: "organizedDesc",
       color: "from-[#2C4A7C] to-blue-600",
     },
     {
       icon: Sparkles,
-      title: "Continuous Offers",
-      description:
-        "Take advantage of our regular promotions, seasonal discounts, and special offers throughout the year.",
+      title: "continuousOffers",
+      description: "offersDesc",
       color: "from-orange-500 to-amber-500",
     },
   ];
 
   const stats = [
-    { number: "10+", label: "Years Experience" },
-    { number: "5000+", label: "Happy Travelers" },
-    { number: "50+", label: "Destinations" },
-    { number: "24/7", label: "Customer Support" },
+    { number: "10+", label: t('yearsExperience') },
+    { number: "5000+", label: t('happyTravelers') },
+    { number: "50+", label: t('destinations') },
+    { number: "24/7", label: t('customerSupport') },
   ];
 
   return (
@@ -61,7 +59,7 @@ export function About() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">About Us</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">{t('aboutUs')}</h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
             Your trusted partner in creating unforgettable travel experiences
           </p>
@@ -74,30 +72,17 @@ export function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-                Our Story
+                {t('ourStory')}
               </h2>
               <div className="space-y-4 text-gray-700 leading-relaxed">
                 <p>
-                  Rainbow Travel & Tourism was founded with a simple yet
-                  powerful vision: to make travel accessible, enjoyable, and
-                  memorable for everyone. Located in the heart of Nablus at
-                  Nablus City Center, second floor, we have become a trusted
-                  name in the travel industry.
+                  {t('storyText')}
                 </p>
                 <p>
-                  Our journey began with a passion for exploration and a
-                  commitment to excellence. Over the years, we have helped
-                  thousands of travelers discover the world, creating memories
-                  that last a lifetime. From the bustling streets of Istanbul to
-                  the pristine beaches of the Maldives, we've been there every
-                  step of the way.
+                  {t('storyText2')}
                 </p>
                 <p>
-                  What sets us apart is our dedication to personalized service.
-                  We understand that every traveler is unique, with different
-                  dreams, preferences, and budgets. That's why we take the time
-                  to listen, understand, and craft travel solutions that
-                  perfectly match your needs.
+                  {t('storyText3')}
                 </p>
               </div>
             </div>
@@ -127,14 +112,10 @@ export function About() {
                 <Target className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-3xl font-bold mb-4 text-gray-900">
-                Our Mission
+                {t('ourMission')}
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                To provide exceptional travel experiences by offering
-                comprehensive, reliable, and affordable travel solutions. We
-                strive to make every journey seamless and memorable, ensuring
-                our clients return home with stories worth sharing and memories
-                to cherish forever.
+                {t('ourMissionText')}
               </p>
             </Card>
 
@@ -143,14 +124,10 @@ export function About() {
                 <Eye className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-3xl font-bold mb-4 text-gray-900">
-                Our Vision
+                {t('ourVision')}
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                To become the leading travel agency in Palestine, recognized for
-                our commitment to excellence, innovation, and customer
-                satisfaction. We envision a future where travel is accessible to
-                all, and where Rainbow Travel is the first choice for travelers
-                seeking quality and value.
+                {t('ourVisionText')}
               </p>
             </Card>
           </div>
@@ -162,11 +139,10 @@ export function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-              Why Choose Rainbow Travel?
+              {t('whyChoose')}
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We're more than just a travel agency – we're your partners in
-              adventure
+              {t('whyChooseDesc')}
             </p>
           </div>
 
@@ -184,10 +160,10 @@ export function About() {
                     <Icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold mb-3 text-gray-900">
-                    {value.title}
+                    {t(value.title)}
                   </h3>
                   <p className="text-gray-700 leading-relaxed">
-                    {value.description}
+                    {t(value.description)}
                   </p>
                 </Card>
               );
@@ -201,7 +177,7 @@ export function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-              Our Core Values
+              {t('ourCoreValues')}
             </h2>
           </div>
 
@@ -209,21 +185,18 @@ export function About() {
             {[
               {
                 icon: Users,
-                title: "Customer First",
-                description:
-                  "Your satisfaction is our top priority. We listen, adapt, and deliver.",
+                title: t('customerFirst'),
+                description: t('customerFirstDesc'),
               },
               {
                 icon: Shield,
-                title: "Trust & Reliability",
-                description:
-                  "We build lasting relationships based on honesty and dependability.",
+                title: t('trustReliability'),
+                description: t('trustReliabilityDesc'),
               },
               {
                 icon: TrendingUp,
-                title: "Continuous Improvement",
-                description:
-                  "We constantly evolve to bring you the best travel experiences.",
+                title: t('continuousImprovement'),
+                description: t('continuousImprovementDesc'),
               },
             ].map((item, index) => {
               const Icon = item.icon;
@@ -251,26 +224,23 @@ export function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-br from-[#2C4A7C] via-[#1e3255] to-[#F5A623] rounded-3xl p-8 md:p-12 text-white">
             <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-4xl font-bold mb-6">Visit Our Office</h2>
+              <h2 className="text-4xl font-bold mb-6">{t('visitOurOffice')}</h2>
               <p className="text-xl text-white/90 mb-8">
-                We're located in the heart of Nablus, ready to help you plan
-                your next adventure
+                {t('officeLocationDesc')}
               </p>
               <div className="space-y-4 mb-8">
                 <p className="text-lg">
-                  📍 Nablus City Center, Second Floor
-                  <br />
-                  Nablus, Palestine
+                  📍 {t('officeAddress')}
                 </p>
-                <p className="text-lg">📞 0597441666</p>
-                <p className="text-lg">✉️ info@rainbowtravel.ps</p>
+                <p className="text-lg">📞 {t('phoneNumber')}</p>
+                <p className="text-lg">✉️ {t('emailAddress')}</p>
               </div>
               <Link to="/contact">
                 <Button
                   size="lg"
                   className="rounded-full bg-white text-[#2C4A7C] hover:bg-gray-100 text-lg px-8 py-6"
                 >
-                  Get in Touch
+                  {t('Get in Touch')}
                 </Button>
               </Link>
             </div>
@@ -282,18 +252,18 @@ export function About() {
       <section className="py-20 bg-gradient-to-r from-[#2C4A7C] via-[#1e3255] to-[#F5A623] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Start Your Journey?
+            {t('readyToStartJourney')}
           </h2>
           <p className="text-xl mb-8 text-white/90">
-            Let us help you create unforgettable memories
+            {t('createUnforgettableMemories')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className={`flex flex-col sm:${flexDirection()} gap-4 justify-center`}>
             <Link to="/offers">
               <Button
                 size="lg"
                 className="rounded-full bg-white text-purple-600 hover:bg-gray-100 text-lg px-8 py-6"
               >
-                View Offers
+                {t('viewOffers')}
               </Button>
             </Link>
             <Link to="/booking">
@@ -302,7 +272,7 @@ export function About() {
                 variant="outline"
                 className="rounded-full border-2 border-white text-white hover:bg-white/20 text-lg px-8 py-6"
               >
-                Book Now
+                {t('bookNow')}
               </Button>
             </Link>
           </div>

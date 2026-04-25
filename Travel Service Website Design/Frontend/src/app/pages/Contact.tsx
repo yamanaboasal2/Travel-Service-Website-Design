@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { MapPin, Phone, Mail, Facebook, Instagram, TikTok, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, Send } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { Card } from "../components/ui/card";
 import { Label } from "../components/ui/label";
 import { sendContactMessage } from "../services/apiService";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function Contact() {
+  const { t, textAlign } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -65,10 +68,9 @@ export function Contact() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">Contact Us</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">{t('contactUs')}</h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-            We're here to help you plan your perfect trip. Get in touch with us
-            today!
+            {t('getInTouch')}
           </p>
         </div>
       </section>
@@ -81,11 +83,10 @@ export function Contact() {
             <div className="lg:col-span-1 space-y-6">
               <div>
                 <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-                  Get in Touch
+                  {t('Get in Touch')}
                 </h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Have questions or need assistance? We're here to help! Reach
-                  out to us through any of the following channels.
+                  {t('Have questions or need assistance? We are here to help! Reach out to us through any of the following channels.')}
                 </p>
               </div>
 
@@ -96,14 +97,10 @@ export function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">
-                      Office Location
+                      {t('officeLocation')}
                     </h3>
                     <p className="text-gray-600 text-sm leading-relaxed">
-                      Nablus City Center
-                      <br />
-                      Second Floor
-                      <br />
-                      Nablus, Palestine
+                      {t('nablusCenter')}
                     </p>
                   </div>
                 </div>
@@ -116,7 +113,7 @@ export function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">
-                      Phone Number
+                      {t('phoneNumber')}
                     </h3>
                     <a
                       href="tel:0597441666"
@@ -125,7 +122,7 @@ export function Contact() {
                       0597441666
                     </a>
                     <p className="text-gray-600 text-sm mt-1">
-                      Available 24/7 for inquiries
+                      {t('available247')}
                     </p>
                   </div>
                 </div>
@@ -137,7 +134,7 @@ export function Contact() {
                     <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Email</h3>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('emailAddress')}</h3>
                     <a
                       href="mailto:info@rainbowtravel.ps"
                       className="text-[#2C4A7C] hover:text-[#1e3255] font-medium"
@@ -145,7 +142,7 @@ export function Contact() {
                       info@rainbowtravel.ps
                     </a>
                     <p className="text-gray-600 text-sm mt-1">
-                      We'll respond within 24 hours
+                      {t('respond24h')}
                     </p>
                   </div>
                 </div>
@@ -153,7 +150,7 @@ export function Contact() {
 
               <div>
                 <h3 className="font-semibold text-gray-900 mb-4">
-                  Follow Us on Social Media
+                  {t('followUs')}
                 </h3>
                 <div className="flex gap-3">
                   <a
@@ -178,7 +175,7 @@ export function Contact() {
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 flex items-center justify-center transition-colors"
                   >
-                    <TikTok className="w-6 h-6 text-white" />
+                    <SiTiktok className="w-6 h-6 text-white" />
                   </a>
                 </div>
                 <div className="mt-3 space-y-1 text-sm text-gray-600">
@@ -192,7 +189,7 @@ export function Contact() {
             {/* Contact Form */}
             <Card className="lg:col-span-2 p-8">
               <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-                Send Us a Message
+                {t('Send Us a Message')}
               </h2>
 
               {submitted ? (
@@ -201,11 +198,10 @@ export function Contact() {
                     <Send className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    Message Sent Successfully!
-                  </h3>
-                  <p className="text-gray-600">
-                    Thank you for contacting us. We'll get back to you within
-                    24 hours.
+                      {t('Message Sent Successfully!')}
+                    </h3>
+                    <p className="text-gray-600">
+                      {t('Thank you for contacting us. We will get back to you within 24 hours.')}
                   </p>
                 </div>
               ) : (
@@ -218,12 +214,12 @@ export function Contact() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Full Name *</Label>
+                      <Label htmlFor="name">{t('fullName')} *</Label>
                       <Input
                         id="name"
                         name="name"
                         type="text"
-                        placeholder="Enter your name"
+                        placeholder={t('name')}
                         value={formData.name}
                         onChange={handleChange}
                         required
@@ -232,12 +228,12 @@ export function Contact() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email Address *</Label>
+                      <Label htmlFor="email">{t('email')} *</Label>
                       <Input
                         id="email"
                         name="email"
                         type="email"
-                        placeholder="your.email@example.com"
+                        placeholder={t('Enter your email')}
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -247,7 +243,7 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone">{t('phone')}</Label>
                     <Input
                       id="phone"
                       name="phone"
@@ -260,11 +256,11 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message *</Label>
+                    <Label htmlFor="message">{t('message')} *</Label>
                     <Textarea
                       id="message"
                       name="message"
-                      placeholder="Tell us about your travel plans or ask us any questions..."
+                      placeholder={t('message')}
                       value={formData.message}
                       onChange={handleChange}
                       required
@@ -279,7 +275,7 @@ export function Contact() {
                     disabled={loading}
                     className="w-full rounded-full bg-gradient-to-r from-[#2C4A7C] to-[#F5A623] hover:from-[#1e3255] hover:to-[#e09515] py-6 disabled:opacity-50"
                   >
-                    {loading ? "Sending..." : "Send Message"}
+                    {loading ? t('sending') : t('sendMessage')}
                     <Send className="ml-2 w-5 h-5" />
                   </Button>
                 </form>
@@ -294,10 +290,10 @@ export function Contact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-              Find Us on the Map
+              {t('Find Us on the Map')}
             </h2>
             <p className="text-lg text-gray-600">
-              Visit our office at Nablus City Center
+              {t('Visit our office at Nablus City Center')}
             </p>
           </div>
 
@@ -323,22 +319,21 @@ export function Contact() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="p-8 bg-gradient-to-br from-[#2C4A7C] via-[#1e3255] to-[#F5A623] text-white">
             <h2 className="text-3xl font-bold mb-6 text-center">
-              Office Hours
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center md:text-left">
+              {t('Office Hours')}
+            </h2>            <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 text-center md:${textAlign('left')}`}>
               <div>
                 <h3 className="font-semibold text-lg mb-2">
-                  Sunday - Thursday
+                  {t('Sunday - Thursday')}
                 </h3>
                 <p className="text-white/90">9:00 AM - 6:00 PM</p>
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2">Saturday</h3>
+                <h3 className="font-semibold text-lg mb-2">{t('Saturday')}</h3>
                 <p className="text-white/90">10:00 AM - 4:00 PM</p>
               </div>
               <div className="md:col-span-2 text-center mt-4">
                 <p className="text-white/90">
-                  Emergency support available 24/7 by phone
+                  {t('Emergency support available 24/7 by phone')}
                 </p>
               </div>
             </div>

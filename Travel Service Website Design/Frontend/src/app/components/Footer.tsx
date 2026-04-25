@@ -1,22 +1,19 @@
-import { Link } from "react-router";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Facebook,
-  Instagram,
-  TikTok,
-} from "lucide-react";
+import { Link } from "react-router-dom";
+import { MapPin, Phone, Mail, Facebook, Instagram } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
+import { useLanguage } from "../contexts/LanguageContext";
 // import logo from "../asset/1f3ae537638b8a42ec68e9ae4a77c883be930ed3.png";
 import logo from "../../assets/logo.png";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   const quickLinks = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Services", path: "/services" },
-    { name: "Offers", path: "/offers" },
-    { name: "Contact", path: "/contact" },
+    { name: t('home'), path: "/" },
+    { name: t('aboutUs'), path: "/about" },
+    { name: t('services'), path: "/services" },
+    { name: t('offers'), path: "/offers" },
+    { name: t('contact'), path: "/contact" },
   ];
 
   return (
@@ -26,21 +23,20 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src={logo} alt="Rainbow Travel & Tourism" className="h-14 w-14" />
+              <img src={logo} alt="رينبو ترافل والسياحة" className="h-14 w-14" />
               <div>
                 <div className="font-bold text-xl">Rainbow Travel</div>
                 <div className="text-sm text-[#F5A623]">& Tourism</div>
               </div>
             </Link>
             <p className="text-white/80 text-sm leading-relaxed">
-              Your trusted travel partner in Nablus, providing complete travel
-              solutions and memorable experiences around the world.
+              {t('yourTrustedPartner')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('quickLinks')}</h3>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.path}>
@@ -57,7 +53,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Contact Us</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('Contact Us')}</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-sm">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
@@ -85,7 +81,7 @@ export function Footer() {
 
           {/* Social Media */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Follow Us</h3>
+            <h3 className="font-semibold text-lg mb-4">{t('Follow Us')}</h3>
             <div className="flex gap-3">
               <a
                 href="https://www.facebook.com/RainbowPalestina/"
@@ -109,7 +105,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/20 hover:bg-[#F5A623] flex items-center justify-center transition-colors"
               >
-                <TikTok className="w-5 h-5" />
+                <SiTiktok className="w-5 h-5" />
               </a>
             </div>
             <div className="mt-4 space-y-1">
@@ -123,8 +119,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/60">
           <p>
-            &copy; {new Date().getFullYear()} Rainbow Travel & Tourism. All
-            rights reserved.
+            &copy; {new Date().getFullYear()} {t('Rainbow Travel & Tourism')}. {t('All rights reserved.')}
           </p>
         </div>
       </div>

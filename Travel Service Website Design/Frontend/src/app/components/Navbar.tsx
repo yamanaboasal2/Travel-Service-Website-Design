@@ -1,46 +1,54 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router";
-import { Menu, X, Search, Languages } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Search } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useSearch } from "../contexts/SearchContext";
+import { useLanguage } from "../contexts/LanguageContext";
 // import logo from "figma:asset/1f3ae537638b8a42ec68e9ae4a77c883be930ed3.png";
 import logo from "../../assets/logo.png";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [language, setLanguage] = useState<"en" | "ar">("en");
   const location = useLocation();
+  const navigate = useNavigate();
+  const { searchQuery, setSearchQuery, isSearching, filteredDestinations, filteredServices, filteredOffers } = useSearch();
+  const { isRTL, t } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Services", path: "/services" },
-    { name: "Offers", path: "/offers" },
-    { name: "Contact", path: "/contact" },
+    { name: t('home'), path: "/" },
+    { name: t('aboutUs'), path: "/about" },
+    { name: t('services'), path: "/services" },
+    { name: t('offers'), path: "/offers" },
+    { name: t('contact'), path: "/contact" },
   ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Search functionality can be implemented here
-    console.log("Search for:", searchQuery);
+    // Navigate to search results page or show results in current page
+    if (searchQuery.trim()) {
+      // For now, navigate to offers page which has filtering
+      navigate('/offers');
+    }
   };
 
-  const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "ar" : "en"));
-    // Here you can add logic to actually change the language
-    console.log("Language changed to:", language === "en" ? "ar" : "en");
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm" dir="rtl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="Rainbow Travel & Tourism" className="h-16 w-16" />
+            <img src={logo} alt="رينبو ترافل والسياحة" className="h-16 w-16" />
             <div>
               <div className="font-bold text-xl text-[#2C4A7C]">
                 Rainbow Travel
@@ -71,28 +79,26 @@ export function Navbar() {
             <form onSubmit={handleSearch} className="relative">
               <Input
                 type="text"
-                placeholder="Search destinations..."
+                placeholder={t('searchPlaceholder')}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 w-56 rounded-full"
+                onChange={handleSearchInputChange}
+                className="pl-10 pr-10 py-2 w-64 rounded-full"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </form>
-            
-            {/* Language Switcher */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleLanguage}
-              className="rounded-full border-2 border-[#2C4A7C] text-[#2C4A7C] hover:bg-blue-50 gap-2"
-            >
-              <Languages className="w-4 h-4" />
-              <span className="font-semibold">{language === "en" ? "AR" : "EN"}</span>
-            </Button>
 
             <Link to="/auth">
               <Button className="rounded-full bg-gradient-to-r from-[#2C4A7C] to-[#F5A623] hover:from-[#1e3255] hover:to-[#e09515]">
-                Login / Sign Up
+                {t('loginSignup')}
               </Button>
             </Link>
           </div>
@@ -112,12 +118,21 @@ export function Navbar() {
             <form onSubmit={handleSearch} className="relative">
               <Input
                 type="text"
-                placeholder="Search destinations..."
+                placeholder={t('searchPlaceholder')}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full rounded-full"
+                onChange={handleSearchInputChange}
+                className="pl-10 pr-10 py-2 w-full rounded-full"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </form>
             {navLinks.map((link) => (
               <Link
@@ -133,21 +148,12 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
+            
             <Link to="/auth" onClick={() => setIsOpen(false)}>
               <Button className="w-full rounded-full bg-gradient-to-r from-[#2C4A7C] to-[#F5A623]">
-                Login / Sign Up
+                {t('loginSignup')}
               </Button>
             </Link>
-            
-            {/* Mobile Language Switcher */}
-            <Button
-              variant="outline"
-              onClick={toggleLanguage}
-              className="w-full rounded-full border-2 border-[#2C4A7C] text-[#2C4A7C] hover:bg-blue-50 gap-2"
-            >
-              <Languages className="w-4 h-4" />
-              <span className="font-semibold">{language === "en" ? "العربية" : "English"}</span>
-            </Button>
           </div>
         )}
       </div>

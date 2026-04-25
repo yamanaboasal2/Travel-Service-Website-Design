@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import {
   MapPin,
   Clock,
@@ -12,6 +12,8 @@ import {
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { useSearch } from "../contexts/SearchContext";
+import { useLanguage } from "../contexts/LanguageContext";
 import {
   Select,
   SelectContent,
@@ -22,6 +24,8 @@ import {
 import { getAllOffers } from "../services/apiService";
 
 export function Offers() {
+  const { filteredOffers, isSearching } = useSearch();
+  const { t, flexDirection } = useLanguage();
   const [countryFilter, setCountryFilter] = useState("all");
   const [priceFilter, setPriceFilter] = useState("all");
   const [loading, setLoading] = useState(true);
@@ -30,9 +34,9 @@ export function Offers() {
   const mockOffers = [
     {
       id: "istanbul",
-      title: "Istanbul Package",
-      country: "Turkey",
-      location: "Istanbul",
+      title: "istanbulPackage",
+      country: "turkey",
+      location: "istanbul",
       price: 750,
       duration: "5 Days / 4 Nights",
       rating: 4.9,
@@ -40,25 +44,25 @@ export function Offers() {
       image:
         "https://images.unsplash.com/photo-1587974136825-b150ee48f112?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpc3RhbmJ1bCUyMHR1cmtleSUyMGhhZ2lhJTIwc29waGlhfGVufDF8fHx8MTc3NDgwMjcxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
       includes: [
-        "Hotel accommodation with breakfast",
-        "Airport transfers (arrival & departure)",
-        "Guided tours to Hagia Sophia",
-        "Visit to Sultan Ahmed Mosque",
-        "Bosphorus cruise tour",
-        "Professional tour guide",
+        "hotelAccommodationBreakfast",
+        "airportTransfers",
+        "guidedToursHagiaSophia",
+        "visitSultanAhmedMosque",
+        "bosphorusCruiseTour",
+        "professionalTourGuide",
       ],
       highlights: [
-        "Historic landmarks",
-        "Cultural experiences",
-        "Delicious Turkish cuisine",
-        "Shopping at Grand Bazaar",
+        "historicLandmarks",
+        "culturalExperiences",
+        "deliciousTurkishCuisine",
+        "shoppingGrandBazaar",
       ],
     },
     {
       id: "aqaba",
-      title: "Aqaba Beach Trip",
-      country: "Jordan",
-      location: "Aqaba",
+      title: "aqabaBeachTrip",
+      country: "jordan",
+      location: "aqaba",
       price: 400,
       duration: "4 Days / 3 Nights",
       rating: 4.8,
@@ -66,18 +70,18 @@ export function Offers() {
       image:
         "https://images.unsplash.com/photo-1643884713348-f8cf6f435cd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcWFiYSUyMGpvcmRhbiUyMGJlYWNoJTIwcmVzb3J0fGVufDF8fHx8MTc3NDgwMjcxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       includes: [
-        "Beachfront hotel stay",
-        "Sea activities (snorkeling)",
-        "Internal transportation",
-        "Optional Wadi Rum desert trip",
-        "Red Sea diving opportunities",
-        "Beach equipment rental",
+        "beachfrontHotelStay",
+        "seaActivitiesSnorkeling",
+        "internalTransportation",
+        "optionalWadiRumTrip",
+        "redSeaDiving",
+        "beachEquipmentRental",
       ],
       highlights: [
-        "Crystal clear waters",
-        "Coral reefs exploration",
-        "Desert adventure option",
-        "Water sports activities",
+        "crystalClearWaters",
+        "coralReefsExploration",
+        "desertAdventureOption",
+        "waterSportsActivities",
       ],
     },
     {
@@ -210,7 +214,14 @@ export function Offers() {
     fetchOffers();
   }, []);
 
-  const filteredOffers = offers.filter((offer) => {
+  const localFilteredOffers = offers.filter((offer) => {
+    // First apply search filtering if searching
+    if (isSearching) {
+      const searchMatch = filteredOffers.some(searchOffer => searchOffer.id === offer.id);
+      if (!searchMatch) return false;
+    }
+
+    // Then apply existing filters
     const countryMatch =
       countryFilter === "all" || offer.country === countryFilter;
     const priceMatch =
@@ -234,11 +245,10 @@ export function Offers() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Special Offers
+            {t('specialOffers')}
           </h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-            Discover amazing travel deals and exclusive packages to your dream
-            destinations
+            {t('offersPageDesc')}
           </p>
         </div>
       </section>
@@ -246,17 +256,17 @@ export function Offers() {
       {/* Filters */}
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <div className={`flex flex-col sm:${flexDirection()} gap-4 items-center justify-between`}>
             <div className="text-lg font-semibold text-gray-700">
-              {filteredOffers.length} Packages Available
+              {t('{count} Packages Available', { count: filteredOffers.length })}
             </div>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className={`flex flex-col sm:${flexDirection()} gap-4`}>
               <Select value={countryFilter} onValueChange={setCountryFilter}>
                 <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue placeholder="Filter by Country" />
+                  <SelectValue placeholder={t('Filter by Country')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Countries</SelectItem>
+                  <SelectItem value="all">{t('All Countries')}</SelectItem>
                   {countries.slice(1).map((country) => (
                     <SelectItem key={country} value={country}>
                       {country}
@@ -267,17 +277,26 @@ export function Offers() {
 
               <Select value={priceFilter} onValueChange={setPriceFilter}>
                 <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue placeholder="Filter by Price" />
+                  <SelectValue placeholder={t('Filter by Price')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Prices</SelectItem>
-                  <SelectItem value="low">Under $700</SelectItem>
-                  <SelectItem value="mid">$700 - $1000</SelectItem>
-                  <SelectItem value="high">Over $1000</SelectItem>
+                  <SelectItem value="all">{t('All Prices')}</SelectItem>
+                  <SelectItem value="low">{t('Under $700')}</SelectItem>
+                  <SelectItem value="mid">{t('$700 - $1000')}</SelectItem>
+                  <SelectItem value="high">{t('Over $1000')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
+
+          {/* Search Results Indicator */}
+          {isSearching && (
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+              <p className="text-blue-700 text-sm">
+                {t('Showing {count} result{plural} for your search', { count: localFilteredOffers.length })}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -292,11 +311,11 @@ export function Offers() {
 
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-gray-600">Loading offers...</p>
+              <p className="text-gray-600">{t('Loading offers...')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {filteredOffers.map((offer) => (
+              {localFilteredOffers.map((offer) => (
                 <Card
                   key={offer.id}
                 className="overflow-hidden hover:shadow-2xl transition-all duration-300"
@@ -343,13 +362,13 @@ export function Offers() {
                   <div className="mb-6">
                     <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <Compass className="w-5 h-5 text-[#2C4A7C]" />
-                      Package Includes:
+                      {t('Package Includes:')}
                     </h4>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {offer.includes.map((item, idx) => (
                         <li key={idx} className="flex items-start gap-2 text-sm">
                           <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#2C4A7C] to-[#F5A623] mt-1.5 flex-shrink-0" />
-                          <span className="text-gray-700">{item}</span>
+                          <span className="text-gray-700">{t(item)}</span>
                         </li>
                       ))}
                     </ul>
@@ -357,7 +376,7 @@ export function Offers() {
 
                   <div className="mb-6">
                     <h4 className="font-semibold text-gray-900 mb-3">
-                      Highlights:
+                      {t('Highlights:')}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {offer.highlights.map((highlight, idx) => (
@@ -365,16 +384,16 @@ export function Offers() {
                           key={idx}
                           className="px-3 py-1 bg-gradient-to-r from-blue-100 to-orange-100 text-[#2C4A7C] rounded-full text-sm font-medium"
                         >
-                          {highlight}
+                          {t(highlight)}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3">
+                  <div className={`flex flex-col sm:${flexDirection()} gap-3`}>
                     <Link to={`/booking/${offer.id}`} className="flex-1">
                       <Button className="w-full rounded-full bg-gradient-to-r from-[#2C4A7C] to-[#F5A623] hover:from-[#1e3255] hover:to-[#e09515] py-6">
-                        Book Now
+                        {t('Book Now')}
                       </Button>
                     </Link>
                     <Link to="/contact" className="flex-1">
@@ -382,7 +401,7 @@ export function Offers() {
                         variant="outline"
                         className="w-full rounded-full border-2 border-[#2C4A7C] text-[#2C4A7C] hover:bg-blue-50 py-6"
                       >
-                        Ask Questions
+                        {t('Ask Questions')}
                       </Button>
                     </Link>
                   </div>
@@ -398,17 +417,17 @@ export function Offers() {
       <section className="py-20 bg-gradient-to-r from-[#2C4A7C] via-[#1e3255] to-[#F5A623] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Can't Find What You're Looking For?
+            {t('cantFind')}
           </h2>
           <p className="text-xl mb-8 text-white/90">
-            Contact us and we'll create a custom package just for you
+            {t('contactCustom')}
           </p>
           <Link to="/contact">
             <Button
               size="lg"
               className="rounded-full bg-white text-[#2C4A7C] hover:bg-gray-100 text-lg px-8 py-6"
             >
-              Contact Us
+              {t('contactUs')}
             </Button>
           </Link>
         </div>
