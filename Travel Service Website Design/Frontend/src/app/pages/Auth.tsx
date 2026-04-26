@@ -8,9 +8,11 @@ import { Card } from "../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import logo from "../../assets/logo.png";
 import { loginUser, registerUser } from "../services/apiService";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function Auth() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
@@ -31,11 +33,11 @@ export function Auth() {
     
     // Validate inputs
     if (!loginData.email.trim()) {
-      setError("Email is required");
+      setError(t('emailRequired'));
       return;
     }
     if (!loginData.password) {
-      setError("Password is required");
+      setError(t('passwordRequired'));
       return;
     }
     
@@ -51,7 +53,7 @@ export function Auth() {
       // Redirect to home on success
       setTimeout(() => navigate("/"), 500);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Login failed. Please try again.";
+      const errorMessage = err instanceof Error ? err.message : t('loginError');
       console.error("❌ Login error:", errorMessage, err);
       setError(errorMessage);
     } finally {
@@ -65,23 +67,23 @@ export function Auth() {
 
     // Validate inputs
     if (!signupData.name.trim()) {
-      setError("Full name is required");
+      setError(t('nameRequired'));
       return;
     }
     if (!signupData.email.trim()) {
-      setError("Email is required");
+      setError(t('emailRequired'));
       return;
     }
     if (!signupData.password) {
-      setError("Password is required");
+      setError(t('passwordRequired'));
       return;
     }
     if (signupData.password !== signupData.confirmPassword) {
-      setError("Passwords do not match!");
+      setError(t('passwordsNotMatch'));
       return;
     }
     if (signupData.password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(t('passwordTooShort'));
       return;
     }
 
@@ -103,7 +105,7 @@ export function Auth() {
       // Redirect to home on success
       setTimeout(() => navigate("/"), 500);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Signup failed. Please try again.";
+      const errorMessage = err instanceof Error ? err.message : t('signupError');
       console.error("❌ Registration error:", errorMessage, err);
       setError(errorMessage);
     } finally {
@@ -164,10 +166,10 @@ export function Auth() {
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="login" className="text-lg py-3">
-                Login
+                {t('login')}
               </TabsTrigger>
               <TabsTrigger value="signup" className="text-lg py-3">
-                Sign Up
+                {t('signup')}
               </TabsTrigger>
             </TabsList>
 
@@ -176,10 +178,10 @@ export function Auth() {
               <div className="space-y-6">
                 <div className="text-center">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    Welcome Back!
+                    {t('welcomeBack', { name: '' })}
                   </h3>
                   <p className="text-gray-600">
-                    Login to access your account
+                    {t('loginToAccess')}
                   </p>
                 </div>
 
@@ -191,13 +193,13 @@ export function Auth() {
 
                 <form onSubmit={handleLoginSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email">Email Address</Label>
+                    <Label htmlFor="login-email">{t('email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
                         id="login-email"
                         type="email"
-                        placeholder="your.email@example.com"
+                        placeholder={t('enterYourEmail')}
                         value={loginData.email}
                         onChange={(e) =>
                           setLoginData({ ...loginData, email: e.target.value })
@@ -209,13 +211,13 @@ export function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="login-password">Password</Label>
+                    <Label htmlFor="login-password">{t('password')}</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
                         id="login-password"
                         type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
+                        placeholder={t('enterYourPassword')}
                         value={loginData.password}
                         onChange={(e) =>
                           setLoginData({
@@ -247,14 +249,14 @@ export function Auth() {
                         className="w-4 h-4 rounded border-gray-300"
                       />
                       <span className="text-sm text-gray-600">
-                        Remember me
+                        {t('rememberMe')}
                       </span>
                     </label>
                     <button
                       type="button"
                       className="text-sm text-[#F5A623] hover:text-[#e09515] font-medium"
                     >
-                      Forgot password?
+                      {t('forgotPassword')}
                     </button>
                   </div>
 
@@ -264,7 +266,7 @@ export function Auth() {
                     disabled={loading}
                     className="w-full rounded-full bg-gradient-to-r from-[#2C4A7C] to-[#F5A623] hover:from-[#1e3255] hover:to-[#e09515] py-6 disabled:opacity-50"
                   >
-                    {loading ? "Logging in..." : "Login"}
+                    {loading ? t('loggingIn') : t('login')}
                   </Button>
                 </form>
               </div>
@@ -275,10 +277,10 @@ export function Auth() {
               <div className="space-y-6">
                 <div className="text-center">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    Create Account
+                    {t('createYourAccount')}
                   </h3>
                   <p className="text-gray-600">
-                    Join us and start exploring the world
+                    {t('joinAndExplore')}
                   </p>
                 </div>
 
@@ -290,13 +292,13 @@ export function Auth() {
 
                 <form onSubmit={handleSignupSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
+                    <Label htmlFor="signup-name">{t('fullName')}</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
                         id="signup-name"
                         type="text"
-                        placeholder="Enter your full name"
+                        placeholder={t('enterYourFullName')}
                         value={signupData.name}
                         onChange={(e) =>
                           setSignupData({ ...signupData, name: e.target.value })
@@ -308,13 +310,13 @@ export function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email Address</Label>
+                    <Label htmlFor="signup-email">{t('email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
                         id="signup-email"
                         type="email"
-                        placeholder="your.email@example.com"
+                        placeholder={t('enterYourEmail')}
                         value={signupData.email}
                         onChange={(e) =>
                           setSignupData({
@@ -329,13 +331,13 @@ export function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
+                    <Label htmlFor="signup-password">{t('password')}</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
                         id="signup-password"
                         type={showPassword ? "text" : "password"}
-                        placeholder="Create a password"
+                        placeholder={t('createPassword')}
                         value={signupData.password}
                         onChange={(e) =>
                           setSignupData({
@@ -361,13 +363,13 @@ export function Auth() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-confirm">Confirm Password</Label>
+                    <Label htmlFor="signup-confirm">{t('confirmPassword')}</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <Input
                         id="signup-confirm"
                         type={showPassword ? "text" : "password"}
-                        placeholder="Confirm your password"
+                        placeholder={t('confirmYourPassword')}
                         value={signupData.confirmPassword}
                         onChange={(e) =>
                           setSignupData({
@@ -388,13 +390,13 @@ export function Auth() {
                       className="w-4 h-4 mt-1 rounded border-gray-300"
                     />
                     <span className="text-sm text-gray-600">
-                      I agree to the{" "}
+                      {t('iAgreeToThe')}{' '}
                       <button className="text-[#F5A623] hover:text-[#e09515] font-medium">
-                        Terms of Service
-                      </button>{" "}
-                      and{" "}
+                        {t('termsOfService')}
+                      </button>{' '}
+                      {t('and')}{' '}
                       <button className="text-[#F5A623] hover:text-[#e09515] font-medium">
-                        Privacy Policy
+                        {t('privacyPolicy')}
                       </button>
                     </span>
                   </div>
@@ -405,7 +407,7 @@ export function Auth() {
                     disabled={loading}
                     className="w-full rounded-full bg-gradient-to-r from-[#2C4A7C] to-[#F5A623] hover:from-[#1e3255] hover:to-[#e09515] py-6 disabled:opacity-50"
                   >
-                    {loading ? "Creating Account..." : "Create Account"}
+                    {loading ? t('creatingAccount') : t('createAccount')}
                   </Button>
                 </form>
               </div>
@@ -417,7 +419,7 @@ export function Auth() {
               to="/"
               className="text-sm text-gray-600 hover:text-[#F5A623]"
             >
-              ← Back to Home
+              ← {t('backToHome')}
             </Link>
           </div>
         </Card>

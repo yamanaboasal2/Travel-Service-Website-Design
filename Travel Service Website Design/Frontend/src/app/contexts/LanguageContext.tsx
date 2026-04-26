@@ -1,14 +1,15 @@
-import { createContext, useContext, ReactNode, useEffect } from 'react';
+import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 
-export type Language = 'ar';
+export type Language = 'ar' | 'en';
 
 interface LanguageContextType {
   language: Language;
   isRTL: boolean;
   t: (key: string, params?: Record<string, string | number>) => string;
-  dir: 'rtl';
+  dir: 'rtl' | 'ltr';
   textAlign: (align: 'left' | 'right' | 'center') => string;
   flexDirection: (direction?: 'row' | 'col') => string;
+  toggleLanguage: () => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -155,8 +156,16 @@ const translations = {
     noAccount: 'ليس لديك حساب؟',
     haveAccount: 'لديك حساب بالفعل؟',
     createAccount: 'إنشاء حساب',
-
-    // Common
+    emailRequired: 'البريد الإلكتروني مطلوب',
+    passwordRequired: 'كلمة المرور مطلوبة',
+    nameRequired: 'الاسم مطلوب',
+    passwordsNotMatch: 'كلمات المرور غير متطابقة',
+    invalidEmail: 'البريد الإلكتروني غير صحيح',
+    passwordTooShort: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
+    loginSuccess: 'تم تسجيل الدخول بنجاح',
+    signupSuccess: 'تم إنشاء الحساب بنجاح',
+    loginError: 'فشل في تسجيل الدخول',
+    signupError: 'فشل في إنشاء الحساب',
     loading: 'جارٍ التحميل...',
     error: 'خطأ',
     success: 'نجح',
@@ -177,10 +186,6 @@ const translations = {
     readyToBook: 'جاهز لحجز رحلتك؟',
     contactCustom: 'تواصل معنا وسننشئ حزمة مخصصة لك فقط',
     cantFind: 'لا تجد ما تبحث عنه؟',
-    'Explore Destinations': 'استكشف الوجهات',
-    'Book Now': 'احجز الآن',
-    'Popular Tourist Attractions': 'المعالم السياحية الشهيرة',
-    'Discover beautiful beaches, landmarks, and cultural destinations': 'اكتشف الشواطئ الجميلة والمعالم الثقافية والأماكن السياحية',
     'Showing {count} destinations matching your search': 'عرض {count} وجهة تتطابق مع بحثك',
     'View All Offers': 'عرض جميع العروض',
     'What Our Customers Say': 'ماذا يقول عملاؤنا',
@@ -208,6 +213,255 @@ const translations = {
     ourVisionText: 'أن نصبح الوكالة الرائدة في السفر في فلسطين، معروفة بالتزامنا بالتميز والابتكار ورضا العملاء. نتخيل مستقبلاً يكون فيه السفر متاحاً للجميع، وتكون رينبو ترافل الخيار الأول للمسافرين الذين يبحثون عن الجودة والقيمة.',
     whyChooseDesc: 'نحن أكثر من مجرد وكالة سفر - نحن شركاؤك في المغامرة',
     ourCoreValues: 'قيمنا الأساسية',
+    loadingServices: 'جارٍ تحميل الخدمات...',
+    whyChooseRainbow: 'لماذا تختار رينبو ترافل؟',
+    committedToExceptional: 'نحن ملتزمون بتقديم تجارب سفر استثنائية',
+    bestValueMoney: 'نقدم أفضل قيمة مقابل أموالكم مع عروض حصرية وأسعار تنافسية.',
+    professionalSupport: 'فريقنا المهني والودود ملتزم بتقديم خدمة عملاء استثنائية.',
+    wellPlannedItineraries: 'يتم التخطيط والتنظيم لكل التفاصيل بعناية لضمان أن تكون رحلتكم سلسة وآمنة وخالية من التوتر.',
+    regularPromotions: 'نحدث عروضنا باستمرار لنقدم لكم أفضل الصفقات وأحدث الوجهات.',
+    filterByCountry: 'تصفية حسب البلد',
+    allCountries: 'جميع البلدان',
+    filterByPrice: 'تصفية حسب السعر',
+    allPrices: 'جميع الأسعار',
+    under700: 'أقل من 700 دولار',
+    between700And1000: '700 - 1000 دولار',
+    over1000: 'أكثر من 1000 دولار',
+    showingResults: 'عرض {count} نتيجة{plural} لبحثك',
+    loadingOffers: 'جارٍ تحميل العروض...',
+    reviews: 'تقييمات',
+    packageIncludes: 'تشمل الحزمة',
+    highlights: 'النقاط البارزة',
+    exploreDestinations: 'استكشف الوجهات',
+    popularTouristAttractions: 'المعالم السياحية الشهيرة',
+    discoverBeachesLandmarks: 'اكتشف الشواطئ الجميلة والمعالم الثقافية والأماكن السياحية',
+    failedToSendMessage: 'فشل في إرسال الرسالة. يرجى المحاولة مرة أخرى.',
+    getInTouchTitle: 'تواصل معنا',
+    contactDescription: 'هل لديك أسئلة أو تحتاج مساعدة؟ نحن هنا للمساعدة! تواصل معنا عبر أي من القنوات التالية.',
+    sendUsMessage: 'أرسل لنا رسالة',
+    messageSentSuccessfully: 'تم إرسال الرسالة بنجاح!',
+    thankYouContact: 'شكراً لتواصلك معنا. سنرد خلال 24 ساعة.',
+    bookingSubmittedSuccess: 'تم إرسال الحجز بنجاح!',
+    bookYourTrip: 'احجز رحلتك',
+    completeFormStartJourney: 'أكمل النموذج أدناه لبدء رحلتك',
+    bookingType: 'نوع الحجز',
+    yourDetails: 'بياناتك',
+    destination: 'الوجهة',
+    review: 'مراجعة',
+    yearsExperience: 'سنوات الخبرة',
+    happyTravelers: 'مسافرين سعداء',
+    destinations: 'وجهات',
+    storyText2: 'نتخصص في تقديم حلول سفر شاملة مصممة حسب احتياجاتكم.',
+    storyText3: 'من الحجز إلى التخطيط، نوفر كل شيء لنجعل رحلتكم لا تُنسى.',
+    customerFirst: 'العميل أولاً',
+    customerFirstDesc: 'عملاؤنا في قلب كل ما نقوم به. نسعى لتجاوز التوقعات وإنشاء ذكريات تدوم.',
+  },
+  en: {
+    // Navigation
+    home: 'Home',
+    aboutUs: 'About Us',
+    aboutTitle: 'About Rainbow Travel',
+    services: 'Services',
+    offers: 'Offers',
+    contact: 'Contact',
+    loginSignup: 'Login / Sign Up',
+
+    // Search
+    searchPlaceholder: 'Search destinations, services, offers...',
+    searchDestinations: 'Search destinations...',
+
+    // Hero sections
+    welcome: 'Welcome to Rainbow Travel',
+    exploreWorld: 'Explore the World with Us',
+    journeyBegins: 'Your Journey Begins...',
+    memoriesYours: 'Memories Are Yours',
+    yourTrustedPartner: 'Your trusted partner in Nablus, providing complete travel solutions and unforgettable experiences around the world.',
+    discoverDestinations: 'Discover Amazing Destinations',
+    topDestinations: 'Top Travel Destinations',
+    explorePopular: 'Explore the most popular countries that people love to visit',
+    ourServices: 'Our Services',
+    completeSolutions: 'Complete travel solutions designed for your needs. From booking to planning, we provide everything.',
+    specialOffers: 'Special Offers',
+    offersPageDesc: 'Discover amazing travel offers and exclusive packages for your dream destinations',
+    exclusiveDeals: 'Exclusive deals and packages for unforgettable experiences',
+    quickLinks: 'Quick Links',
+    contactUs: 'Contact Us',
+    getInTouch: 'We are here to help you plan your perfect trip. Get in touch today!',
+
+    // Buttons and actions
+    getStarted: 'Get Started',
+    learnMore: 'Learn More',
+    bookNow: 'Book Now',
+    viewDetails: 'View Details',
+    sendMessage: 'Send Message',
+    sending: 'Sending...',
+    submit: 'Submit',
+
+    // Forms
+    fullName: 'Full Name',
+    email: 'Email',
+    phone: 'Phone',
+    message: 'Message',
+    name: 'Name',
+
+    // Services
+    flightBooking: 'Flight Booking',
+    flightDesc: 'Book flights to destinations around the world with competitive prices and flexible options.',
+    hotelReservations: 'Hotel Reservations',
+    hotelDesc: 'Find and book the perfect accommodation for your trip.',
+    tourPackages: 'Tour Packages',
+    tourDesc: 'Explore carefully designed tour packages that include flights, hotels, tours, and activities.',
+    visaAssistance: 'Visa Assistance',
+    visaDesc: 'Get specialized help with visa applications and documentation.',
+    travelPlanning: 'Travel Planning',
+    planningDesc: 'Let our experienced travel consultants help you plan your perfect trip.',
+
+    // Features
+    internationalFlights: 'International & Domestic Flights',
+    bestFare: 'Best Price Guarantee',
+    easyCancellation: 'Easy Cancellation & Rescheduling',
+    customerSupport: '24/7 Customer Support',
+    wideAccommodations: 'Wide Range of Accommodations',
+    bestPrice: 'Best Price Guarantee',
+    verifiedReviews: 'Verified Reviews & Ratings',
+    groupRates: 'Special Group Rates',
+    allInclusive: 'All-Inclusive Packages',
+    customizable: 'Customizable Itineraries',
+    localGuides: 'Expert Local Guides',
+    privateTours: 'Group & Private Tours',
+    visaConsultation: 'Visa Consultations',
+    documentPrep: 'Document Preparation',
+    applicationTracking: 'Application Tracking',
+
+    // Auth
+    login: 'Login',
+    signup: 'Sign Up',
+    password: 'Password',
+    forgotPassword: 'Forgot Password?',
+    noAccount: 'Don\'t have an account?',
+    haveAccount: 'Already have an account?',
+    emailRequired: 'Email is required',
+    passwordRequired: 'Password is required',
+    nameRequired: 'Full name is required',
+    passwordsNotMatch: 'Passwords do not match',
+    invalidEmail: 'Invalid email address',
+    passwordTooShort: 'Password must be at least 6 characters',
+    loginSuccess: 'Login successful',
+    signupSuccess: 'Account created successfully',
+    loginError: 'Login failed',
+    signupError: 'Signup failed',
+    welcomeBack: 'Welcome Back',
+    loginToAccess: 'Login to access your account',
+    createYourAccount: 'Create Your Account',
+    joinAndExplore: 'Join us and start exploring the world',
+    rememberMe: 'Remember me',
+    loggingIn: 'Logging in...',
+    signingUp: 'Signing up...',
+    enterYourEmail: 'Enter your email',
+    enterYourPassword: 'Enter your password',
+    enterYourFullName: 'Enter your full name',
+    createPassword: 'Create a password',
+    confirmPassword: 'Confirm Password',
+    confirmYourPassword: 'Confirm your password',
+    iAgreeToThe: 'I agree to the',
+    termsOfService: 'Terms of Service',
+    and: 'and',
+    privacyPolicy: 'Privacy Policy',
+    creatingAccount: 'Creating Account...',
+    createAccount: 'Create Account',
+    backToHome: 'Back to Home',
+    loadingServices: 'Loading services...',
+    whyChooseRainbow: 'Why Choose Rainbow Travel?',
+    committedToExceptional: 'We are committed to providing exceptional travel experiences',
+    bestValueMoney: 'We offer the best value for your money with exclusive deals and competitive prices.',
+    professionalSupport: 'Our professional and friendly team is committed to providing outstanding customer service.',
+    wellPlannedItineraries: 'All details are carefully planned and organized to ensure your trip is smooth, safe, and stress-free.',
+    regularPromotions: 'We regularly update our offers to provide you with the best deals and latest destinations.',
+    filterByCountry: 'Filter by Country',
+    allCountries: 'All Countries',
+    filterByPrice: 'Filter by Price',
+    allPrices: 'All Prices',
+    under700: 'Under $700',
+    between700And1000: '$700 - $1000',
+    over1000: 'Over $1000',
+    showingResults: 'Showing {count} result{plural} for your search',
+    loadingOffers: 'Loading offers...',
+    reviews: 'reviews',
+    packageIncludes: 'Package Includes',
+    highlights: 'Highlights',
+    exploreDestinations: 'Explore Destinations',
+    popularTouristAttractions: 'Popular Tourist Attractions',
+    discoverBeachesLandmarks: 'Discover beautiful beaches, landmarks, and cultural destinations',
+    failedToSendMessage: 'Failed to send message. Please try again.',
+    getInTouchTitle: 'Get in Touch',
+    contactDescription: 'Have questions or need assistance? We are here to help! Reach out to us through any of the following channels.',
+    sendUsMessage: 'Send Us a Message',
+    messageSentSuccessfully: 'Message Sent Successfully!',
+    thankYouContact: 'Thank you for contacting us. We will get back to you within 24 hours.',
+    bookingSubmittedSuccess: 'Booking submitted successfully!',
+    bookYourTrip: 'Book Your Trip',
+    completeFormStartJourney: 'Complete the form below to start your journey',
+    bookingType: 'Booking Type',
+    yourDetails: 'Your Details',
+    destination: 'Destination',
+    review: 'Review',
+    yearsExperience: 'Years Experience',
+    happyTravelers: 'Happy Travelers',
+    destinations: 'Destinations',
+    storyText2: 'We specialize in providing comprehensive travel solutions designed for your needs.',
+    storyText3: 'From booking to planning, we provide everything to make your journey unforgettable.',
+    customerFirst: 'Customer First',
+    customerFirstDesc: 'Our customers are at the heart of everything we do. We strive to exceed expectations and create lasting memories.',
+    loading: 'Loading...',
+    error: 'Error',
+    success: 'Success',
+    close: 'Close',
+    yes: 'Yes',
+    no: 'No',
+    cancel: 'Cancel',
+    save: 'Save',
+    delete: 'Delete',
+    edit: 'Edit',
+    view: 'View',
+    back: 'Back',
+    next: 'Next',
+    previous: 'Previous',
+    page: 'Page',
+    of: 'of',
+
+    // Footer and additional
+    contactToday: 'Contact us today and let us help you plan your perfect vacation',
+    readyToBook: 'Ready to book your trip?',
+    contactCustom: 'Contact us and we\'ll create a custom package just for you',
+    cantFind: 'Can\'t find what you\'re looking for?',
+    'Showing {count} destinations matching your search': 'Showing {count} destinations matching your search',
+    'View All Offers': 'View All Offers',
+    'What Our Customers Say': 'What Our Customers Say',
+    'Real experiences from happy travelers': 'Real experiences from happy travelers',
+    'Ready to Start Your Journey?': 'Ready to Start Your Journey?',
+    'Book your dream vacation today and create memories that last a lifetime': 'Book your dream vacation today and create memories that last a lifetime',
+    'Contact Us': 'Contact Us',
+    'Follow Us': 'Follow Us',
+    'Rainbow Travel & Tourism': 'Rainbow Travel & Tourism',
+    'All rights reserved.': 'All rights reserved.',
+    'Have questions or need assistance? We are here to help! Reach out to us through any of the following channels.': 'Have questions or need assistance? We are here to help! Reach out to us through any of the following channels.',
+    'Find Us on the Map': 'Find Us on the Map',
+    'Visit our office at Nablus City Center': 'Visit our office at Nablus City Center',
+    'Office Hours': 'Office Hours',
+    'Sunday - Thursday': 'Sunday - Thursday',
+    'Saturday': 'Saturday',
+    'Emergency support available 24/7 by phone': 'Emergency support available 24/7 by phone',
+    'Get in Touch': 'Get in Touch',
+    'Send Us a Message': 'Send Us a Message',
+    'Message Sent Successfully!': 'Message Sent Successfully!',
+    'Thank you for contacting us. We will get back to you within 24 hours.': 'Thank you for contacting us. We will get back to you within 24 hours.',
+    'Enter your email': 'Enter your email',
+
+    // About page specific
+    ourMissionText: 'To provide exceptional travel experiences through comprehensive, reliable, and affordable travel solutions. We strive to make every journey smooth and unforgettable, ensuring our customers return home with stories worth sharing and memories they\'ll cherish forever.',
+    ourVisionText: 'To become the leading travel agency in Palestine, recognized for our commitment to excellence, innovation, and customer satisfaction. We envision a future where travel is accessible to all, and where Rainbow Travel is the first choice for travelers seeking quality and value.',
+    whyChooseDesc: 'We\'re more than just a travel agency – we\'re your partners in adventure',
+    ourCoreValues: 'Our Core Values',
   },
 };
 
@@ -216,18 +470,28 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  const language: Language = 'ar';
-  const isRTL = true;
-  const dir: 'rtl' = 'rtl';
+  const [language, setLanguage] = useState<Language>(() => {
+    // Get saved language from localStorage or default to English
+    const saved = localStorage.getItem('rainbow-travel-language');
+    return (saved === 'en' || saved === 'ar') ? saved : 'en';
+  });
 
-  // Set document direction when component mounts
+  const isRTL = language === 'ar';
+  const dir: 'rtl' | 'ltr' = isRTL ? 'rtl' : 'ltr';
+
+  // Set document direction and language when language changes
   useEffect(() => {
-    document.documentElement.dir = 'rtl';
-    document.documentElement.lang = 'ar';
-  }, []);
+    document.documentElement.dir = dir;
+    document.documentElement.lang = language;
+    localStorage.setItem('rainbow-travel-language', language);
+  }, [language, dir]);
+
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === 'ar' ? 'en' : 'ar');
+  };
 
   const t = (key: string, params?: Record<string, string | number>): string => {
-    let text = translations.ar[key as keyof typeof translations.ar] || key;
+    let text = translations[language][key as keyof typeof translations.ar] || key;
 
     if (params) {
       Object.entries(params).forEach(([paramKey, paramValue]) => {
@@ -240,24 +504,25 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
 
   const textAlign = (align: 'left' | 'right' | 'center'): string => {
     if (align === 'center') return 'text-center';
-    return align === 'left' ? 'text-right' : 'text-left';
+    return isRTL ? (align === 'left' ? 'text-right' : 'text-left') : (align === 'left' ? 'text-left' : 'text-right');
   };
 
   const flexDirection = (direction: 'row' | 'col' = 'row'): string => {
     if (direction === 'col') return 'flex-col';
-    return 'flex-row-reverse';
+    return isRTL ? 'flex-row-reverse' : 'flex-row';
   };
 
   return (
     <LanguageContext.Provider value={{
       language,
       isRTL,
-      dir,
       t,
+      dir,
       textAlign,
       flexDirection,
+      toggleLanguage,
     }}>
       {children}
     </LanguageContext.Provider>
   );
-};
+}

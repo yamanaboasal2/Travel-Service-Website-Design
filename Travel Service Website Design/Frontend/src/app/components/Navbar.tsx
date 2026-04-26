@@ -13,7 +13,7 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { searchQuery, setSearchQuery, isSearching, filteredDestinations, filteredServices, filteredOffers } = useSearch();
-  const { isRTL, t } = useLanguage();
+  const { isRTL, t, toggleLanguage, language } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -43,12 +43,12 @@ export function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm" dir="rtl">
+    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="رينبو ترافل والسياحة" className="h-16 w-16" />
+            <img src={logo} alt={t('Rainbow Travel & Tourism')} className="h-16 w-16" />
             <div>
               <div className="font-bold text-xl text-[#2C4A7C]">
                 Rainbow Travel
@@ -101,6 +101,13 @@ export function Navbar() {
                 {t('loginSignup')}
               </Button>
             </Link>
+
+            <Button
+              onClick={toggleLanguage}
+              className="rounded-full border-2 border-[#2C4A7C] text-[#2C4A7C] hover:bg-[#2C4A7C] hover:text-white transition-colors px-4 py-2"
+            >
+              {language === 'ar' ? 'EN' : 'عر'}
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -154,6 +161,16 @@ export function Navbar() {
                 {t('loginSignup')}
               </Button>
             </Link>
+
+            <Button
+              onClick={() => {
+                toggleLanguage();
+                setIsOpen(false);
+              }}
+              className="w-full rounded-full border-2 border-[#2C4A7C] text-[#2C4A7C] hover:bg-[#2C4A7C] hover:text-white transition-colors"
+            >
+              {language === 'ar' ? 'English' : 'العربية'}
+            </Button>
           </div>
         )}
       </div>

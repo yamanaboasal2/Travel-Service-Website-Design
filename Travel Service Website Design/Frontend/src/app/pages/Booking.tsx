@@ -21,11 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-import { RadioGroup, RadioGroupItem } from "../components/ui/radio-group";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function Booking() {
   const { offerId } = useParams();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [step, setStep] = useState(1);
   const [bookingData, setBookingData] = useState({
     // Step 1: Booking Type
@@ -99,9 +100,7 @@ export function Booking() {
     e.preventDefault();
     console.log("Booking submitted:", bookingData);
     // Show confirmation and redirect to contact or confirmation page
-    alert(
-      "Booking request submitted successfully! We'll contact you shortly to confirm your booking."
-    );
+    alert(t('bookingSubmittedSuccess'));
     navigate("/contact");
   };
 
@@ -135,10 +134,10 @@ export function Booking() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-            Book Your Trip
+            {t('bookYourTrip')}
           </h1>
           <p className="text-lg text-gray-600">
-            Complete the form below to start your journey with Rainbow Travel
+            {t('completeFormStartJourney')}
           </p>
         </div>
 
@@ -146,10 +145,10 @@ export function Booking() {
         <div className="mb-12">
           <div className="flex items-center justify-between max-w-3xl mx-auto">
             {[
-              { num: 1, title: "Booking Type" },
-              { num: 2, title: "Your Details" },
-              { num: 3, title: "Destination" },
-              { num: 4, title: "Review" },
+              { num: 1, title: t('bookingType') },
+              { num: 2, title: t('yourDetails') },
+              { num: 3, title: t('destination') },
+              { num: 4, title: t('review') },
             ].map((s, idx) => (
               <div key={s.num} className="flex items-center flex-1">
                 <div className="flex flex-col items-center">

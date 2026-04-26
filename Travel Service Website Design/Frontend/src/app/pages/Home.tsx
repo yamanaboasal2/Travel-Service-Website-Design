@@ -150,7 +150,7 @@ export function Home() {
                 size="lg"
                 className="rounded-full bg-[#F5A623] hover:bg-[#e09515] text-white text-lg px-8 py-6"
               >
-                {t('Explore Destinations')}
+                {t('exploreDestinations')}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
@@ -160,7 +160,7 @@ export function Home() {
                 variant="outline"
                 className="rounded-full bg-white/20 backdrop-blur-sm border-white/40 hover:bg-white/30 text-white text-lg px-8 py-6"
               >
-                {t('Book Now')}
+                {t('bookNow')}
               </Button>
             </Link>
           </div>
@@ -233,10 +233,10 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
-              {t('Popular Tourist Attractions')}
+              {t('popularTouristAttractions')}
             </h2>
             <p className="text-lg text-gray-600">
-              {t('Discover beautiful beaches, landmarks, and cultural destinations')}
+              {t('discoverBeachesLandmarks')}
             </p>
           </div>
 

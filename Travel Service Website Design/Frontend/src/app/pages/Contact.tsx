@@ -83,10 +83,10 @@ export function Contact() {
             <div className="lg:col-span-1 space-y-6">
               <div>
                 <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-                  {t('Get in Touch')}
+                  {t('getInTouchTitle')}
                 </h2>
                 <p className="text-gray-600 leading-relaxed">
-                  {t('Have questions or need assistance? We are here to help! Reach out to us through any of the following channels.')}
+                  {t('contactDescription')}
                 </p>
               </div>
 
@@ -189,7 +189,7 @@ export function Contact() {
             {/* Contact Form */}
             <Card className="lg:col-span-2 p-8">
               <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#2C4A7C] via-[#F5A623] to-[#2C4A7C] bg-clip-text text-transparent">
-                {t('Send Us a Message')}
+                {t('sendUsMessage')}
               </h2>
 
               {submitted ? (

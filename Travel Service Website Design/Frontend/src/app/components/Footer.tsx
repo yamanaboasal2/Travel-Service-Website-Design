@@ -23,7 +23,7 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src={logo} alt="رينبو ترافل والسياحة" className="h-14 w-14" />
+              <img src={logo} alt={t('Rainbow Travel & Tourism')} className="h-14 w-14" />
               <div>
                 <div className="font-bold text-xl">Rainbow Travel</div>
                 <div className="text-sm text-[#F5A623]">& Tourism</div>
